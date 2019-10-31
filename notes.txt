@@ -1,0 +1,4 @@
+curl -X POST -g 'http://prometheus/api/v1/admin/tsdb/delete_series?match[]=probe_success{instance=<domainname>}'
+
+curl -u admin:Password  -XPOST http://prometheus/api/v1/admin/tsdb/snapshot
+

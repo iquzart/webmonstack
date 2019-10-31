@@ -1,0 +1,16 @@
+- targets:
+    - example.com
+  
+  labels:
+    groups: 'BU-1 Web Sites'
+
+- targets:
+    - example.ae
+  labels:
+    groups: 'BU-2 Web Sites'
+
+- targets:
+    - app-01.org
+    - app-02.io
+  labels:
+    groups: 'BU-1 Apps'

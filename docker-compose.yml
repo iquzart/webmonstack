@@ -1,0 +1,114 @@
+version: '3.7'
+
+networks:
+  monitor-net-prod:
+
+volumes:
+    prometheus_data: 
+       driver: local
+       driver_opts:
+           o: bind
+           type: none
+           device: /docker/data/prometheus
+
+    grafana_data: 
+       driver: local
+       driver_opts:
+           o: bind
+           type: none
+           device: /docker/data/grafana
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-admin-api'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=90d'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - monitor-net-prod
+  
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: nodeexporter
+    user: root
+    privileged: true
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    networks:
+      - monitor-net-prod
+  
+  alertmanager:
+   image: prom/alertmanager
+   container_name: alertmanager
+   volumes: 
+     - ./alertmanager/:/etc/alertmanager/
+     - /etc/localtime:/etc/localtime:ro
+   command:
+     - '--config.file=/etc/alertmanager/config.yml'
+     - '--storage.path=/alertmanager'
+     - '--web.listen-address=0.0.0.0:9093'
+   restart: unless-stopped
+   networks:
+     - monitor-net-prod
+
+  blackbox_exporter:
+   image: prom/blackbox-exporter
+   container_name: blackbox
+   restart: unless-stopped
+   volumes:
+     - ./blackbox:/etc/blackbox/
+     - /etc/localtime:/etc/localtime:ro
+   command: 
+     - --config.file=/etc/blackbox/blackbox.yml
+   networks:
+     - monitor-net-prod
+
+
+  grafana:
+   image: grafana/grafana:5.2.4
+   container_name: grafana
+   volumes:
+     - grafana_data:/var/lib/grafana
+     - ./grafana/datasources:/etc/grafana/datasources
+     - ./grafana/dashboards:/etc/grafana/dashboards
+     - ./grafana/setup.sh:/setup.sh
+     - /etc/localtime:/etc/localtime:ro
+   entrypoint: /setup.sh
+   environment:
+     - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+     - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+     - GF_USERS_ALLOW_SIGN_UP=false
+   restart: unless-stopped
+   ports:
+     - 3000:3000
+   networks:
+     - monitor-net-prod
+
+
+  proxy:
+    image: nginx:alpine
+    container_name: proxy
+    ports:
+      - "80:80"
+    volumes:
+      - "./proxy/monitor-stack.conf:/etc/nginx/conf.d/monitor-stack.conf:ro"
+      - "./proxy/.htpasswd:/etc/nginx/conf.d/.htpasswd:ro"
+    networks:
+      - monitor-net-prod
