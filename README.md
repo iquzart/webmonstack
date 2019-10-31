@@ -8,15 +8,15 @@ Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafa
 2. clone the repository
 3. Updated values on below files
    - webmonstack/prometheus/blackbox_targets.yml 
-      Configure web URLs and update the group labels
+      *Configure web URLs and update the group labels*
    - webmonstack/alertmanager/config.yml 
-      Configure sendgrid API key and Email address
+      *Configure sendgrid API key and Email address*
    - webmonstack/proxy/.htpasswd
-      Update htaccess credentials
+      *Update htaccess credentials*
    - webmonstack/scripts/prom-web-availability.py
-      Update Prometheus URL, sender and receiver email addresses 
-4. Configure cronjob to run the script *"webmonstack/scripts/prom-web-availability.py"* on 1st of every month
-5. docker compose up -d 
+      *Update Prometheus URL, sender and receiver email addresses*
+4. Configure cronjob to run the script *"webmonstack/scripts/prom-web-availability.py"* on 1st of every month.
+5. Start the stack - *"docker compose up -d"*
 
 # Grafana Dashboards
 ### Web-Overview
