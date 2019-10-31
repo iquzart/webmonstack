@@ -1,6 +1,5 @@
 # Webmonstack
-Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafana
-
+Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafana.
 
 
 # Installation
