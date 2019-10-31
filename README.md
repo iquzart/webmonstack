@@ -1,8 +1,8 @@
-# webmonstack
+# Webmonstack
 Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafana
 
 
-
+```
 # Installation
 1. Install Docker and Docker Compose 
 2. clone the repository
@@ -17,7 +17,7 @@ Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafa
       *Update Prometheus URL, sender and receiver email addresses*
 4. Configure cronjob to run the script *"webmonstack/scripts/prom-web-availability.py"* on 1st of every month.
 5. Start the stack - *"docker compose up -d"*
-
+```
 # Grafana Dashboards
 ### Web-Overview
 ![Overview](https://github.com/iquzart/webmonstack/blob/master/images/web-overview.png)
