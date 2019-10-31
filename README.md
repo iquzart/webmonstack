@@ -25,7 +25,7 @@ Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafa
 4. Configure cronjob to run the script "webmonstack/scripts/prom-web-availability.py" on 1st of every month.
 ```
 ```
-5. Start the stack - *"docker compose up -d"*
+5. Start the stack - "docker compose up -d"
 ```
 # Grafana Dashboards
 ### Web-Overview
