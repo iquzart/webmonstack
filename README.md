@@ -1,6 +1,8 @@
 # Webmonstack
 Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafana.
 
+# Architecture
+![Infograph](https://github.com/iquzart/webmonstack/blob/master/images/webmonstack.PNG)
 
 # Installation
 ```
