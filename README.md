@@ -12,7 +12,7 @@ Web site / Web application monitoring using Prometheus, BlackBox Exporter, Grafa
 2. clone the repository
 ```
 ```
-3. Updated values on below files
+3. Updated values in below files
    - webmonstack/prometheus/blackbox_targets.yml 
       Configure web URLs and update the group labels
    - webmonstack/alertmanager/config.yml 
